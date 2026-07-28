@@ -1,8 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h1>Hola, como estas?
-            Aguante el bulla
-        </h1>
-    </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Cañón</title>
+  <style>
+    body { margin: 0; background: #111; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="game"></canvas>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // ↓↓↓ TU CÓDIGO ACÁ ↓↓↓
+      // Dibuja un círculo azul en x=100, y=200, radio 20
+        ctx.beginPath();
+ctx.arc(120, 70, 70, 0, 2 * Math.PI, false);
+ctx.fillStyle = "blue";
+ctx.fill();
+      // ↑↑↑ TU CÓDIGO ACÁ ↑↑↑
+    }
+
+    draw();
+  </script>
+</body>
 </html>
