@@ -10,6 +10,7 @@
   </style>
 </head>
 <body>
+
   <canvas id="game"></canvas>
   <script>
     const canvas = document.getElementById('game');
@@ -17,17 +18,28 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let x = 100;
+    let y = 500
+    let x = 50
+    const gravedad = 0.1;
+    let velocidady = -7
+    let velocidadx = 3
+    
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // ↓↓↓ TU CÓDIGO ACÁ ↓↓↓
       // Dibuja un círculo azul en x=100, y=200, radio 20
         ctx.beginPath();
-        ctx.arc(x, 200, 75, 0, 2 * Math.PI);
+        ctx.arc(x,y, 50, 0, 2 * Math.PI);
         ctx.fillStyle = "blue";
         ctx.fill();
-        x += 2;
+        y  +100;
+        velocidady += gravedad;
+        y += velocidady
+        x += velocidadx
+        
+        console.log(y);
         requestAnimationFrame(draw);
       // ↑↑↑ TU CÓDIGO ACÁ ↑↑↑
     }
