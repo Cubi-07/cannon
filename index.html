@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Cañón</title>
   <style>
-    body { margin: 0; background: #111; overflow: hidden; }
-    canvas { display: block; }
+    body {
+      margin: 0;
+      background: #111;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
   <canvas id="game"></canvas>
   <script>
@@ -16,23 +25,62 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    console.log(canvas.height)
+    console.log(canvas.width)
+    const radio = 50;
+    const inicialx = radio;
+    const inicialy = canvas.height - radio;
+    const gravedad = 0.2;
+    const velocidadInicialx = 4;
+    const velocidadInicialy = -8;
 
-    function draw() {
+    let y;
+    let x;
+    let velocidady; 
+    let velocidadx;
+
+    let animationId;
+
+    canvas.addEventListener("touchstart", disparar);
+
+
+    posicionInicial()
+
+
+    function dibujar(x, y) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(x, y, radio, 0, 2 * Math.PI);
+      ctx.fillStyle = "blue";
+      ctx.fill();
+    }
+
+    function posicionInicial() {
+      x = inicialx
+      y = inicialy
+      velocidadx = velocidadInicialx
+      velocidady = velocidadInicialy
+      dibujar(x, y)
+    }
+
+
+    function disparar() {
 
       // ↓↓↓ TU CÓDIGO ACÁ ↓↓↓
-      // Dibuja un círculo azul en x=100, y=200, radio 20
-        ctx.beginPath();
-ctx.arc(100, 200, 100, 0, 2 * Math.PI, false);
-ctx.fillStyle = "blue";
-ctx.fill();
-ctx.arc(300, 100, 100, 0, 2 * Math.PI, false);
-ctx.fillStyle = "red";
-ctx.fill();
+      velocidady += gravedad
+      x += velocidadx
+      y += velocidady
+      dibujar(x, y)
+      animationId = requestAnimationFrame(disparar);
+
+      if (x > canvas.width) {
+        cancelAnimationFrame(animationId)
+        posicionInicial()
+      }
       // ↑↑↑ TU CÓDIGO ACÁ ↑↑↑
     }
 
-    draw();
   </script>
 </body>
+
 </html>
