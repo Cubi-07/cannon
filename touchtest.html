@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="titulo">
+        Toca aqui
+    </h1>
+</body>
+
+<script>
+    let titulo = document.getElementById("titulo")
+
+    titulo.addEventListener("touchstart", alertaToque)
+
+
+    function alertaToque() {
+        alert("tocaste")
+    }
+</script>
+</html>

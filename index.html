@@ -38,10 +38,13 @@
     let x;
     let velocidady; 
     let velocidadx;
-
+    let animacionEnCurso = false;
     let animationId;
 
-    canvas.addEventListener("touchstart", disparar);
+    canvas.addEventListener("touchend",(e) => {
+      e.preventDefault()
+      disparar()
+    });
 
 
     posicionInicial()
@@ -63,23 +66,25 @@
       dibujar(x, y)
     }
 
-
+    
     function disparar() {
-
-      // ↓↓↓ TU CÓDIGO ACÁ ↓↓↓
-      velocidady += gravedad
+      if (animacionEnCurso) return
+      animacionEnCurso = true;
+      empezarAnimacion()
+    }
+    function empezarAnimacion(){
+            velocidady += gravedad
       x += velocidadx
       y += velocidady
       dibujar(x, y)
-      animationId = requestAnimationFrame(disparar);
+      animationId = requestAnimationFrame(empezarAnimacion);
 
-      if (x > canvas.width) {
+      if (x > canvas.width + radio) {
         cancelAnimationFrame(animationId)
         posicionInicial()
+        animacionEnCurso = false;
       }
-      // ↑↑↑ TU CÓDIGO ACÁ ↑↑↑
     }
-
   </script>
 </body>
 
