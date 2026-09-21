@@ -33,15 +33,39 @@
     const gravedad = 0.2;
     const velocidadInicialx = 4;
     const velocidadInicialy = -8;
+    const fuerza = 0.1;
 
     let y;
     let x;
-    let velocidady; 
+    let velocidady;
     let velocidadx;
     let animacionEnCurso = false;
+    let inicioX = 0;
+    let inicioY = 0;
+    let actualX = 0;
+    let actualY = 0;
     let animationId;
 
-    canvas.addEventListener("touchend",(e) => {
+
+    let deltaLimite = radio * 2
+
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      if (animacionEnCurso) return;
+      inicioX = e.touches[0].clientX;
+      inicioY = e.touches[0].clientY;
+      actualX = inicioX;
+      actualY = inicioY;
+    });
+
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (animacionEnCurso) return;
+      actualX = e.touches[0].clientX;
+      actualY = e.touches[0].clientY;
+    });
+    canvas.addEventListener("touchend", (e) => {
       e.preventDefault()
       disparar()
     });
@@ -66,25 +90,40 @@
       dibujar(x, y)
     }
 
-    
+
     function disparar() {
       if (animacionEnCurso) return
+      let dx = inicioX - actualX;
+      let dy = inicioY - actualY;
+      velocidadx = dx * fuerza;
+      velocidady = dy * fuerza;
+
       animacionEnCurso = true;
       empezarAnimacion()
     }
-    function empezarAnimacion(){
-            velocidady += gravedad
+    function empezarAnimacion() {
+      velocidady += gravedad
       x += velocidadx
       y += velocidady
       dibujar(x, y)
       animationId = requestAnimationFrame(empezarAnimacion);
 
-      if (x > canvas.width + radio) {
+      if (estaFueraDelLimite()) {
         cancelAnimationFrame(animationId)
         posicionInicial()
         animacionEnCurso = false;
       }
     }
+
+
+    function estaFueraDelLimite() {
+      return x > canvas.width + deltaLimite ||
+        x < -deltaLimite ||
+        y > canvas.height + deltaLimite ||
+        y < 0 - deltaLimite
+    }
+
+
   </script>
 </body>
 
