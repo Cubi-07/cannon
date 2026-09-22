@@ -25,8 +25,7 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    console.log(canvas.height)
-    console.log(canvas.width)
+
     const radio = 50;
     const inicialx = radio;
     const inicialy = canvas.height - radio;
@@ -53,6 +52,7 @@
     canvas.addEventListener("touchstart", (e) => {
       e.preventDefault();
       if (animacionEnCurso) return;
+      posicionInicial()
       inicioX = e.touches[0].clientX;
       inicioY = e.touches[0].clientY;
       actualX = inicioX;
@@ -97,24 +97,42 @@
       let dy = inicioY - actualY;
       velocidadx = dx * fuerza;
       velocidady = dy * fuerza;
-
       animacionEnCurso = true;
       empezarAnimacion()
     }
+
+
     function empezarAnimacion() {
       velocidady += gravedad
       x += velocidadx
       y += velocidady
       dibujar(x, y)
       animationId = requestAnimationFrame(empezarAnimacion);
+      console.log("x = " + x + ", y = " + y)
+
+      if (estaTocandoElSuelo()) {
+        y = canvas.height - radio;
+        cancelarAnimacion()
+        return;
+      }
+
 
       if (estaFueraDelLimite()) {
-        cancelAnimationFrame(animationId)
+        cancelarAnimacion()
         posicionInicial()
-        animacionEnCurso = false;
       }
     }
 
+    function cancelarAnimacion() {
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+        animacionEnCurso = false
+      }
+    }
+
+    function estaTocandoElSuelo() {
+      return y >= canvas.height - radio
+    }
 
     function estaFueraDelLimite() {
       return x > canvas.width + deltaLimite ||
