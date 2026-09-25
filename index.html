@@ -44,6 +44,7 @@
     let actualX = 0;
     let actualY = 0;
     let animationId;
+    let estaDeslizando = false
 
 
     let deltaLimite = radio * 2
@@ -64,10 +65,16 @@
       if (animacionEnCurso) return;
       actualX = e.touches[0].clientX;
       actualY = e.touches[0].clientY;
+
+      estaDeslizando = true
+
     });
     canvas.addEventListener("touchend", (e) => {
       e.preventDefault()
-      disparar()
+      if (estaDeslizando) {
+        disparar()
+        estaDeslizando = false
+      }
     });
 
 
@@ -108,14 +115,16 @@
       y += velocidady
       dibujar(x, y)
       animationId = requestAnimationFrame(empezarAnimacion);
-      console.log("x = " + x + ", y = " + y)
 
       if (estaTocandoElSuelo()) {
-        y = canvas.height - radio;
-        cancelarAnimacion()
-        return;
+        //calcular la velocidad, invertir ejey y dividir por 2
+        y = canvas.height - radio
+        if (velocidady > 0) velocidady = (-1 * velocidady) / 2
+        velocidadx = velocidadx * 0.7
+        if (velocidadx < 0.2) {
+          cancelarAnimacion()
+        }
       }
-
 
       if (estaFueraDelLimite()) {
         cancelarAnimacion()
@@ -124,9 +133,9 @@
     }
 
     function cancelarAnimacion() {
+      animacionEnCurso = false
       if (animationId) {
         cancelAnimationFrame(animationId)
-        animacionEnCurso = false
       }
     }
 
